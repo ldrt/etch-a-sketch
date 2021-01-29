@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>Etch-a-sketch</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="container">
+        <!-- see JS for grid -->
+    </div>
+
+    <script>
+        let gridSize = 16;
+        const container = document.getElementById("container");
+        container.style.setProperty("--grid-size", gridSize);
+        const clear = document.createElement("button");
+        clear.innerText = "Clear grid";
+        clear.addEventListener("click", () => {
+            gridSize = prompt("How many squares per side do you want your new grid ?");
+            if (gridSize > 100) {
+                alert("You cannot have a bigger grid than 100x100");
+                return;
+            }
+            // erase all previous squares
+            while (container.firstChild) {
+                container.removeChild(container.firstChild);
+            }
+            drawGrid(gridSize);
+        });
+        document.body.insertBefore(clear, container);
+
+        function drawGrid(size) {
+            container.style.setProperty("--grid-size", size);
+            for (let i = 0; i < (size * size); i++) {
+                const square = document.createElement("div");
+                square.className = "square";
+                let nbHover = 0;
+                square.addEventListener("mouseover", () => {
+                    nbHover++;                    
+                    let color = Math.floor(Math.random()*16777215).toString(16);
+                    if (nbHover >= 10) {
+                        color = "000000";
+                    }
+                    square.style.setProperty("--square-color", "#"+color);
+                });
+                container.appendChild(square);
+            }
+        }
+    </script>
+</body>
+
+</html>
